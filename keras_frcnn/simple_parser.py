@@ -11,12 +11,14 @@ def get_data(input_path):
     class_mapping = {}
 
     visualise = True
-    index = 0
+    index = 1
     with open(input_path, 'r') as f:
+
         print('Parsing annotation files')
+
         for line in f:
             print(index)
-            index += 1
+            index+=1
             line_split = line.strip().split(',')
             (filename, x1, y1, x2, y2, class_name) = line_split
 
@@ -46,22 +48,16 @@ def get_data(input_path):
             all_imgs[filename]['bboxes'].append(
                 {'class': class_name, 'x1': int(x1), 'x2': int(x2), 'y1': int(y1), 'y2': int(y2)})
 
-            all_data = []
-            for key in all_imgs:
-                all_data.append(all_imgs[key])
+        all_data = []
+        for key in all_imgs:
+            all_data.append(all_imgs[key])
 
-            # make sure the bg class is last in the list
-            if found_bg:
-                if class_mapping['bg'] != len(class_mapping) - 1:
-                    key_to_switch = \
-                    [key for key in class_mapping.keys() if class_mapping[key] == len(class_mapping) - 1][0]
-                    val_to_switch = class_mapping['bg']
-                    class_mapping['bg'] = len(class_mapping) - 1
-                    class_mapping[key_to_switch] = val_to_switch
+        # make sure the bg class is last in the list
+        if found_bg:
+            if class_mapping['bg'] != len(class_mapping) - 1:
+                key_to_switch = [key for key in class_mapping.keys() if class_mapping[key] == len(class_mapping) - 1][0]
+                val_to_switch = class_mapping['bg']
+                class_mapping['bg'] = len(class_mapping) - 1
+                class_mapping[key_to_switch] = val_to_switch
 
-    return all_data, classes_count, class_mapping
-
-
-
-
-
+        return all_data, classes_count, class_mapping
