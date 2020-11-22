@@ -17,8 +17,8 @@ def get_data(input_path):
         print('Parsing annotation files')
 
         for line in f:
-            print(index)
-            index+=1
+            # print(index)
+            # index+=1
             line_split = line.strip().split(',')
             (filename, x1, y1, x2, y2, class_name) = line_split
 
@@ -59,5 +59,5 @@ def get_data(input_path):
                 val_to_switch = class_mapping['bg']
                 class_mapping['bg'] = len(class_mapping) - 1
                 class_mapping[key_to_switch] = val_to_switch
-
+        print('Done Parsing data')
         return all_data, classes_count, class_mapping
