@@ -48,10 +48,12 @@ def rpn_loss_cls(num_anchors):
 
 def class_loss_regr(num_classes):
 	def class_loss_regr_fixed_num(y_true, y_pred):
-		x = K.cast(y_true[:, :, 4*num_classes:], 'float32') - K.cast(y_pred, 'float32')
+		label_true = K.cast(y_true[:, :, 4*num_classes:], 'float32')
+		label_pred = K.cast(y_pred, 'float32')
+		x = label_true - label_pred
 		x_abs = K.abs(x)
 		x_bool = K.cast(K.less_equal(x_abs, 1.0), 'float32')
-		return K.cast(lambda_cls_regr, 'float32') * K.cast(K.sum(y_true[:, :, :4*num_classes] * (x_bool * (0.5 * x * x) + (1 - x_bool) * (x_abs - 0.5))) / K.sum(epsilon + y_true[:, :, :4*num_classes]), 'float32')
+		return K.cast(lambda_cls_regr, 'float32') * K.cast(K.sum(label_true * (x_bool * (0.5 * x * x) + (1 - x_bool) * (x_abs - 0.5))) / K.sum(epsilon + label_true), 'float32')
 	return class_loss_regr_fixed_num
 
 
