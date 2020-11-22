@@ -170,11 +170,11 @@ def nn_base(input_tensor=None, trainable=False):
             img_input = Input(tensor=input_tensor, shape=input_shape)
         else:
             img_input = input_tensor
-
-    if K.common.image_dim_ordering() == 'tf':
-        bn_axis = 3
-    else:
-        bn_axis = 1
+    bn_axis = 3
+    # if K.common.image_dim_ordering() == 'tf':
+    #     bn_axis = 3
+    # else:
+    #     bn_axis = 1
 
     x = ZeroPadding2D((3, 3))(img_input)
 
